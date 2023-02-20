@@ -16,12 +16,13 @@
 			padding: 0;
             background-color: #272727;
             color: #272727;
+      
 		}
 
 		body {
   	font-family: 'Inter', sans-serif;
   	color: whitesmoke;
-	background-color: #000000;
+	background-color: #272727;
 	font-size: 16px;
 	padding-bottom: 5rem;
 }
@@ -393,29 +394,118 @@ input:disabled {
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 <link href="/infer.css" rel="stylesheet"></head>
-<body class="center" style="font-family: 'Inter', 'IBM Plex Sans Thai', sans-serif;">
+<body class="center" style="font-family: 'IBM Plex Sans Thai', sans-serif;">
 <form id="inputForm">
-  <div class="center">
-    <div id="header" class="center" style="width:50rem">
-            <img class="header__logo" src="https://raw.githubusercontent.com/BADIM-PYproject/website/beta/assets/badim-web-logo.svg" alt="Buddha Amulet Detection and Identification Model"><br><br><br><br><br><br>
+    <div class="header">
+        <div class="header__grid">
+            <a href="https://badim-pyproject.github.io/website/"><img class="header__logo" src="https://raw.githubusercontent.com/BADIM-PYproject/website/beta/assets/badim-web-logo.svg" alt="Buddha Amulet Detection and Identification Model"></a>
+            <div>
+                <label class="header__label" for="model" style="font-size: 18px;">โมเดล</label>
+                <input class="input" type="text" id="model" disabled/>
+            </div>
+            <div>
+                <label class="header__label" for="version" style="font-size: 18px;">เวอร์ชัน</label>
+                <input class="input" type="number" id="version" disabled/>
+            </div>
+            <div>
+                <label class="header__label" for="api_key" style="font-size: 18px;">API Key</label>
+                <input class="input" type="password" id="api_key" disabled/>
+            </div>
+        </div>
     </div>
-    <p style="font-size: 24px; margin-top: -80px" align="center">โปรดเลือกภาษาที่ต้องการใช้งาน<br>Please select your preferred language.</p><br><br>
+
     <div class="center" class="content">
+      <p style="font-size: 28px;"><strong>พระเครื่องที่รองรับ</strong></p>
+      <p>พระนางพญา พิษณุโลก • พระกริ่ง • พระกริ่งมหาราช • พระกลีบบัว • พระซุ้มกอ</p>
+      <p>พระครูวัดเงินคลองเตย • พระวัดพลับ • พระรอด • พระผงสุพรรณ • พระรอดวัดมหาวัน </p>
+      <p>สมเด็จวัดระฆัง • สมเด็จบางขุนพรม • สมเด็จวัดเกศไชโย </p>
+      <br>
+        <div class="content__grid">
+            <div class="col-12-s6-m4" id="method">
+                <label class="input__label" style="font-size: 20px; width:18rem"><b>วิธีอัปโหลด</b></label>
+                <div>
+                    <button data-value="upload" id="computerButton" class="bttn left fill active" style="width: 7.5rem">อัปโหลดไฟล์</button>
+                    <button data-value="url" id="urlButton" class="bttn right fill" style="width: 5rem">URL</button>
+                </div>
+            </div>
+
+            <div class="col-12-m8" id="fileSelectionContainer">
+                <label class="input__label" for="file" style="font-size: 20px;"><b>เลือกไฟล์</b></label>
+                <div class="flex">
+                    <input class="input input--left flex-1" type="text" id="fileName" disabled />
+                    <button id="fileMock" class="bttn right active"">ค้นดู</button>
+                </div>
+                <input style="display: none;" type="file" id="file" />
+            </div>
+
+            <div class="col-12-m8" id="urlContainer">
+                <label class="input__label" for="file" style="font-size: 20px;"><b>ใส่ URL ภาพ</b></label>
+                <div class="flex">
+                    <input type="text" id="url" placeholder="https://path.to/your.jpg" class="input"/><br>
+                </div>
+            </div>
+
+            <div class="col-12-m6">
+                <label class="input__label" for="classes" style="font-size: 20px;"><b>กรองคลาส</b> (ไม่บังคับ)</label>
+                <input type="text" id="classes" placeholder="ใส่ชื่อคลาส" class="input"/><br>
+                <span class="text--small">ใช้ลูกน้ำแยกชื่อคลาส</span>
+            </div>
+
+            <div class="col-6-m3 relative">
+                <label class="input__label" for="confidence" style="font-size: 20px;">ความมั่นใจ (ขั้นต่ำ)</label>
+                <div>
+                    <i class="fas fa-crown"></i>
+                    <span class="icon">%</span>
+                    <input type="number" id="confidence" value="40" max="100" accuracy="2" min="0" class="input input__icon"/></div>
+                </div>
+            <div class="col-6-m3 relative">
+                <label class="input__label" for="overlap" style="font-size: 20px;">การทับซ้อนกัน (สูงสุด)</label>
+                <div>
+                    <i class="fas fa-object-ungroup"></i>
+                    <span class="icon">%</span>
+                    <input type="number" id="overlap" value="30" max="100" accuracy="2" min="0" class="input input__icon"/></div>
+            </div>
+            <div class="col-6-m3" id="format">
+                <label class="input__label" style="font-size: 20px;"><b>ผลลัพธ์ Inference</b></label>
+                <div>
+                    <button id="imageButton" data-value="image" class="bttn left fill active">รูปภาพ</button>
+                    <button id="jsonButton" data-value="json" class="bttn right fill">JSON</button>
+                </div>
+            </div>
+            <div class="col-12 content__grid" id="imageOptions">
+                <div class="col-12-s6-m4" id="labels">
+                    <label class="input__label" style="font-size: 20px;"><b>Labels</b></label>
+                    <div>
+                        <button class="bttn left">ปิด</button>
+                        <button data-value="on" class="bttn right active">เปิด</button>
+                    </div>
+                </div>
+                <div class="col-12-s6-m4" id="stroke">
+                    <label class="input__label" style="font-size: 20px;"><b>ความหนาเส้นขอบ</b></label>
+                    <div>
+                        <button data-value="1" class="bttn left">1px</button>
+                        <button data-value="2" class="bttn active">2px</button>
+                        <button data-value="5" class="bttn">5px</button>
+                        <button data-value="10" class="bttn right">10px</button>
+                    </div>
+                </div>
+            </div>
             <div class="col-12">
-                <a href="https://badim-pyproject.github.io/website/th/model-th.html"><button type="button" value="ภาษาไทย" id="bttn__primary" class="btn" style="box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.25);
-border-radius: 10px;"><b>ภาษาไทย</b></button></a>
-              <br><br><br>
-                <a href="https://badim-pyproject.github.io/website/en/model-en.html"><button type="button" value="English" id="bttn__primary" class="btn" style="box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.25);
-border-radius: 10px;"><b>English</b></button>
+                <button type="submit" value="Run Inference" id="bttn__primary" class="btn" style="box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.25);
+border-radius: 10px;"><b>รัน Inference</b></button>
             </div>
         </div>
         <div class="result" id="resultContainer">
+            <div class="divider"></div>
+            <div class="result__header">
+                <h3 class="headline">ผลลัพธ์</h3>
+                <a href="#">คัดลอกโค้ด</a>
+            </div>
+            <pre id="output" class="codeblock"/></pre>
         </div>
     </div>
-  </div>
 </form>
 
 <script type="text/javascript">
